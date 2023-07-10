@@ -28,11 +28,11 @@ down: ## down docker services
 	docker-compose down -v
 
 up-prod: build-prod ## up production docker services in the background
-	docker-compose -f docker-compose.prod.yml up -d
+	docker-compose -f docker-compose.yml up -d
 	docker system prune -f
 
 build-prod: ## build production docker services
-	docker-compose -f docker-compose.prod.yml build
+	docker-compose -f docker-compose.yml build
 
 down-prod: ## down production docker services
-	docker-compose -f docker-compose.prod.yml down -v
+	docker-compose -f docker-compose.yml down -v
