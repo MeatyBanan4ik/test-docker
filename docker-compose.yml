@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    restart: unless-stopped
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/:ro
+    networks:
+      - backend
+      - frontend
+
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    expose:
+      - 27017
+    volumes:
+      - 'mongodb:/data/db'
+    networks:
+      - mongo
+
+  backend:
+    image: backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    expose:
+      - 3000
+    networks:
+      - backend
+      - mongo
+
+  frontend:
+    image: frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    expose:
+      - 3001
+    networks:
+      - frontend
+
+networks:
+  mongo:
+  backend:
+  frontend:
+
+volumes:
+  mongodb:
